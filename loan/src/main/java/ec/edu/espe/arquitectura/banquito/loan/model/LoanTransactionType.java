@@ -1,7 +1,5 @@
 package ec.edu.espe.arquitectura.banquito.loan.model;
 
-import java.sql.Date;
-
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -15,36 +13,36 @@ import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
 
 @Entity
-@Table(name = "TRANSACTION_CHANNEL")
-public class TransactionChannel {
+@Table(name = "LOAN_TRANSACTION_TYPE")
+public class LoanTransactionType {
     // Primary Key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TRANSACTION_CHANNEL_ID", nullable = false)
+    @Column(name = "LOAN_TRANSACTION_TYPE_ID", nullable = false)
     private Integer id;
 
-    // Attributes
-    @Column(name = "NAME", length = 100, nullable = false)
+    @Column(name = "NAME", length = 50, nullable = false)
     private String name;
+
+    @Column(name = "DESCRIPTION", length = 1000, nullable = false)
+    private String description;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATION_DATE", nullable = false)
     private Date creationDate;
 
-    @Column(name = "ACTIVATED", nullable = false)
-    private Boolean activated;
-
-    @Column(name = "LOAN_CONSTRAINS_USAGE", length = 3, nullable = false)
-    private String loanConstrainsUsage;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "LAST_MODIFIED_DATE", nullable = false)
+    private Date lastModifiedDate;
 
     @Version
     @Column(name = "VERSION", nullable = false)
     private Long version;
 
-    public TransactionChannel() {
+    public LoanTransactionType() {
     }
 
-    public TransactionChannel(Integer id) {
+    public LoanTransactionType(Integer id) {
         this.id = id;
     }
 
@@ -64,6 +62,14 @@ public class TransactionChannel {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -72,20 +78,12 @@ public class TransactionChannel {
         this.creationDate = creationDate;
     }
 
-    public Boolean getActivated() {
-        return activated;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setActivated(Boolean activated) {
-        this.activated = activated;
-    }
-
-    public String getLoanConstrainsUsage() {
-        return loanConstrainsUsage;
-    }
-
-    public void setLoanConstrainsUsage(String loanConstrainsUsage) {
-        this.loanConstrainsUsage = loanConstrainsUsage;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Long getVersion() {
@@ -112,7 +110,7 @@ public class TransactionChannel {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        TransactionChannel other = (TransactionChannel) obj;
+        LoanTransactionType other = (LoanTransactionType) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -123,8 +121,9 @@ public class TransactionChannel {
 
     @Override
     public String toString() {
-        return "TransactionChannel [id=" + id + ", name=" + name + ", creationDate=" + creationDate + ", activated="
-                + activated + ", loanConstrainsUsage=" + loanConstrainsUsage + ", version=" + version + "]";
+        return "LoanTransactionType [id=" + id + ", name=" + name + ", description=" + description + ", creationDate="
+                + creationDate + ", lastModifiedDate=" + lastModifiedDate + ", version=" + version + "]";
     }
 
+    
 }
