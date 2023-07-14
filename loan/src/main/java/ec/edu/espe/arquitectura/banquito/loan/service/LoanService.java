@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.repository.LoanRepository;
+import jakarta.transaction.Transactional;
 
 public class LoanService {
 
@@ -35,7 +36,7 @@ public class LoanService {
 
     }
 
-    @Transactional
+    @Transactional  
     public Loan loanCreate(Loan loan) {
         Loan loanTmp = this.loanRepository.findById(loan.getId());
         if (loanTmp == null) {

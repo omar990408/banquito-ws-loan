@@ -83,13 +83,7 @@ public class LoanTransaction {
     @JoinColumn(name = "LOAN_TRANSACTION_TYPE_ID", referencedColumnName = "LOAN_TRANSACTION_TYPE_ID", insertable = false, updatable = false, nullable = false)
     private LoanTransactionType loanTransactionType;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", insertable = false, updatable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "BRANCH_ID", insertable = false, updatable = false)
-    private Branch branch;
+   
 
     public LoanTransaction() {
     }
@@ -242,21 +236,7 @@ public class LoanTransaction {
         this.loanTransactionType = loanTransactionType;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Branch getBranch() {
-        return branch;
-    }
-
-    public void setBranch(Branch branch) {
-        this.branch = branch;
-    }
+ 
 
     @Override
     public int hashCode() {
@@ -291,7 +271,9 @@ public class LoanTransaction {
                 + entryDate + ", principalAmount=" + principalAmount + ", interestAmount=" + interestAmount
                 + ", feesAmount=" + feesAmount + ", penaltyAmount=" + penaltyAmount + ", principalBalance="
                 + principalBalance + ", version=" + version + ", loan=" + loan + ", loanTransactionType="
-                + loanTransactionType + ", user=" + user + ", branch=" + branch + "]";
+                + loanTransactionType + "]";
     }
+
+  
 
 }

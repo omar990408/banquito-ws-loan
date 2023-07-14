@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -46,6 +45,7 @@ public class Loan {
 
     @Column(name = "USER_ID")
     private Integer userId;
+
 
     @Column(name = "LOAN_PRODUCT_ID", nullable = false)
     private Integer loanProductId;
@@ -152,38 +152,10 @@ public class Loan {
     @Column(name = "VERSION", nullable = false)
     private Long version;
 
-    // Relationships
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "CLIENT_ID", insertable = false, updatable = false)
-    private Client client;
-
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "GROUP_COMPANY_ID", referencedColumnName = "GROUP_COMPANY_ID", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "GROUP_ROLE_ID", referencedColumnName = "GROUP_ROLE_ID", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "CLIENT_ID", referencedColumnName = "CLIENT_ID", nullable = false, insertable = false, updatable = false)
-    })
-    private GroupCompanyMember groupCompanyMember;
-
-    @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "BRANCH_ID", insertable = false, updatable = false)
-    private Branch branch;
-
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", insertable = false, updatable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "LOAN_PRODUCT_ID", referencedColumnName = "LOAN_PRODUCT_ID", insertable = false, updatable = false)
-    private LoanProduct loanProduct;
-
     @ManyToOne
     @JoinColumn(name = "GUARANTY_ID", referencedColumnName = "GUARANTY_ID", insertable = false, updatable = false)
     private Guaranty guaranty;
 
-    @ManyToOne
-    @JoinColumn(name = "RESCHEDULED_LOAN_ID", insertable = false, updatable = false)
-    private Loan parentLoan;
     @OneToMany(mappedBy = "parentLoan", cascade = CascadeType.ALL)
     private List<Loan> childrenLoan;
 
@@ -197,6 +169,8 @@ public class Loan {
     public Integer getId() {
         return id;
     }
+
+    
 
     public void setId(Integer id) {
         this.id = id;
@@ -265,7 +239,6 @@ public class Loan {
     public void setGuarantyId(Integer guarantyId) {
         this.guarantyId = guarantyId;
     }
-
 
     public String getAccountHolderType() {
         return accountHolderType;
@@ -499,45 +472,12 @@ public class Loan {
         this.principalPaid = principalPaid;
     }
 
-
     public Long getVersion() {
         return version;
     }
 
     public void setVersion(Long version) {
         this.version = version;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public Branch getBranch() {
-        return branch;
-    }
-
-    public void setBranch(Branch branch) {
-        this.branch = branch;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LoanProduct getLoanProduct() {
-        return loanProduct;
-    }
-
-    public void setLoanProduct(LoanProduct loanProduct) {
-        this.loanProduct = loanProduct;
     }
 
     public Guaranty getGuaranty() {
@@ -548,14 +488,6 @@ public class Loan {
         this.guaranty = guaranty;
     }
 
-    public Loan getParentLoan() {
-        return parentLoan;
-    }
-
-    public void setParentLoan(Loan parentLoan) {
-        this.parentLoan = parentLoan;
-    }
-
     public List<Loan> getChildrenLoan() {
         return childrenLoan;
     }
@@ -563,6 +495,8 @@ public class Loan {
     public void setChildrenLoan(List<Loan> childrenLoan) {
         this.childrenLoan = childrenLoan;
     }
+
+    
 
     @Override
     public int hashCode() {
@@ -593,21 +527,24 @@ public class Loan {
     public String toString() {
         return "Loan [id=" + id + ", clientId=" + clientId + ", groupCompanyId=" + groupCompanyId + ", groupRoleId="
                 + groupRoleId + ", groClientId=" + groClientId + ", branchId=" + branchId + ", userId=" + userId
-                + ", loanProductId=" + loanProductId + ", guarantyId=" + guarantyId + ", accountHolderType=" + accountHolderType + ", creationDate=" + creationDate
-                + ", approvedDate=" + approvedDate + ", lastModifiedDate=" + lastModifiedDate + ", state=" + state
-                + ", name=" + name + ", amount=" + amount + ", principalDue=" + principalDue + ", interestDue="
-                + interestDue + ", interestPaid=" + interestPaid + ", feesDue=" + feesDue + ", feesPaid=" + feesPaid
-                + ", penalityDue=" + penalityDue + ", penalityPaid=" + penalityPaid + ", repaymentPeriodCount="
-                + repaymentPeriodCount + ", repaymentPeriodUnit=" + repaymentPeriodUnit + ", repaymentInstallments="
-                + repaymentInstallments + ", gracePeriodType=" + gracePeriodType + ", gracePeriod=" + gracePeriod
-                + ", interestRate=" + interestRate + ", interestChargeFrequence=" + interestChargeFrequence
-                + ", interestCalculationMethod=" + interestCalculationMethod + ", notes=" + notes
-                + ", lastAccountAppraisalDate=" + lastAccountAppraisalDate + ", scheduleDueDatesMethod="
-                + scheduleDueDatesMethod + ", fixedDaysOfMonth=" + fixedDaysOfMonth + ", taxRate=" + taxRate
-                + ", penaltyRate=" + penaltyRate + ", principalPaid=" + principalPaid + ", version=" + version + ", client=" + client + ", branch=" + branch + ", user="
-                + user + ", loanProduct=" + loanProduct + ", guaranty=" + guaranty + ", parentLoan=" + parentLoan
+                + ", loanProductId=" + loanProductId + ", guarantyId=" + guarantyId + ", accountHolderType="
+                + accountHolderType + ", creationDate=" + creationDate + ", approvedDate=" + approvedDate
+                + ", lastModifiedDate=" + lastModifiedDate + ", state=" + state + ", name=" + name + ", amount="
+                + amount + ", principalDue=" + principalDue + ", interestDue=" + interestDue + ", interestPaid="
+                + interestPaid + ", feesDue=" + feesDue + ", feesPaid=" + feesPaid + ", penalityDue=" + penalityDue
+                + ", penalityPaid=" + penalityPaid + ", repaymentPeriodCount=" + repaymentPeriodCount
+                + ", repaymentPeriodUnit=" + repaymentPeriodUnit + ", repaymentInstallments=" + repaymentInstallments
+                + ", gracePeriodType=" + gracePeriodType + ", gracePeriod=" + gracePeriod + ", interestRate="
+                + interestRate + ", interestChargeFrequence=" + interestChargeFrequence + ", interestCalculationMethod="
+                + interestCalculationMethod + ", notes=" + notes + ", lastAccountAppraisalDate="
+                + lastAccountAppraisalDate + ", scheduleDueDatesMethod=" + scheduleDueDatesMethod
+                + ", fixedDaysOfMonth=" + fixedDaysOfMonth + ", taxRate=" + taxRate + ", penaltyRate=" + penaltyRate
+                + ", principalPaid=" + principalPaid + ", version=" + version + ", guaranty=" + guaranty
                 + ", childrenLoan=" + childrenLoan + "]";
     }
+
+   
+
 
     
 }

@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
@@ -20,6 +18,19 @@ public class Guaranty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GUARANTY_ID", nullable = false)
     private Integer id;
+
+    // Foreign Keys
+    @Column(name = "CLIENT_ID")
+    private Integer clientId;
+
+    @Column(name = "GROUP_COMPANY_ID")
+    private Integer groupCompanyId;
+
+    @Column(name = "GROUP_ROLE_ID", length = 3)
+    private String groupRoleId;
+
+    @Column(name = "GRO_CLIENT_ID")
+    private Integer groClientId;
 
     // Attributes
     @Column(name = "AMOUNT", precision = 18, scale = 2, nullable = false)
@@ -51,12 +62,46 @@ public class Guaranty {
         this.id = id;
     }
 
+    
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
+    public Integer getGroupCompanyId() {
+        return groupCompanyId;
+    }
+
+    public void setGroupCompanyId(Integer groupCompanyId) {
+        this.groupCompanyId = groupCompanyId;
+    }
+
+    public String getGroupRoleId() {
+        return groupRoleId;
+    }
+
+    public void setGroupRoleId(String groupRoleId) {
+        this.groupRoleId = groupRoleId;
+    }
+
+    public Integer getGroClientId() {
+        return groClientId;
+    }
+
+    public void setGroClientId(Integer groClientId) {
+        this.groClientId = groClientId;
     }
 
     public BigDecimal getAmount() {
@@ -134,8 +179,11 @@ public class Guaranty {
 
     @Override
     public String toString() {
-        return "Guaranty [id=" + id + ", amount=" + amount + ", assetName=" + assetName + ", type=" + type
-                + ", guarantorType=" + guarantorType + ", state=" + state + ", version=" + version + "]";
+        return "Guaranty [id=" + id + ", clientId=" + clientId + ", groupCompanyId=" + groupCompanyId + ", groupRoleId="
+                + groupRoleId + ", groClientId=" + groClientId + ", amount=" + amount + ", assetName=" + assetName
+                + ", type=" + type + ", guarantorType=" + guarantorType + ", state=" + state + ", version=" + version
+                + "]";
     }
 
+    
 }
