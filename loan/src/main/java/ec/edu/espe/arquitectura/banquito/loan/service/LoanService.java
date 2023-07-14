@@ -20,9 +20,19 @@ public class LoanService {
             return this.loanRepository.findByAccountHolderCode(pattern);
         } 
         else {
-            throw new RuntimeException("El Loan " + pattern + " no existe");
+            throw new RuntimeException("El Prestamo indicado " + pattern + " no existe");
         }
 
+    }
+
+    @Transactional  
+    public Loan loanCreate(Loan loan) {
+        Loan loanTmp = this.loanRepository.findByClientId(loan.getId());
+        if (loanTmp == null) {
+
+
+        }
+    
     }
 
 
