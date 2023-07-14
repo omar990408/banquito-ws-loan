@@ -14,6 +14,7 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
 
 
     List<Loan> findAll();
+    List<Loan> findByAccountHolderCode(String pattern);
 
 }
     
