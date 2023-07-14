@@ -35,10 +35,6 @@ public class LoanProductBranch {
     @Version
     @Column(name = "VERSION", nullable = false)
     private Long version;
-    
-    @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "BRANCH_ID", insertable = false, updatable = false, nullable = false)
-    private Branch branch;
     @ManyToOne
     @JoinColumn(name = "LOAN_PRODUCT_ID", referencedColumnName = "LOAN_PRODUCT_ID", insertable = false, updatable = false, nullable = false)
     private LoanProduct loanProducto;
@@ -77,12 +73,6 @@ public class LoanProductBranch {
     public void setVersion(Long version) {
         this.version = version;
     }
-    public Branch getBranch() {
-        return branch;
-    }
-    public void setBranch(Branch branch) {
-        this.branch = branch;
-    }
     public LoanProduct getLoanProducto() {
         return loanProducto;
     }
@@ -112,13 +102,16 @@ public class LoanProductBranch {
             return false;
         return true;
     }
+
     @Override
     public String toString() {
-        return "LoanProductBranch [id=" + id + ", creationDate=" + creationDate + ", lastModifiedDate="
-                + lastModifiedDate + ", status=" + status + ", version=" + version + ", branch=" + branch
-                + ", loanProducto=" + loanProducto + "]";
+        return "LoanProductBranch{" +
+                "id=" + id +
+                ", creationDate=" + creationDate +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", status='" + status + '\'' +
+                ", version=" + version +
+                ", loanProducto=" + loanProducto +
+                '}';
     }
-
-    
-
 }

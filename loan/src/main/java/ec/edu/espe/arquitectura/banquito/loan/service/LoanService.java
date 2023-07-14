@@ -15,7 +15,7 @@ public class LoanService {
     }
 
     public Optional<Loan> obtainById(Integer id) {
-        Optional<Loan> loanOpt = this.loanRepository.findById(id);
+        Optional<Loan> loanOpt = Optional.ofNullable(this.loanRepository.findById(id));
         if (loanOpt.isPresent()) {
             return loanOpt;
         } else {
