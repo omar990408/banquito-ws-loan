@@ -21,19 +21,6 @@ public class Guaranty {
     @Column(name = "GUARANTY_ID", nullable = false)
     private Integer id;
 
-    // Foreign Keys
-    @Column(name = "CLIENT_ID")
-    private Integer clientId;
-
-    @Column(name = "GROUP_COMPANY_ID")
-    private Integer groupCompanyId;
-
-    @Column(name = "GROUP_ROLE_ID", length = 3)
-    private String groupRoleId;
-
-    @Column(name = "GRO_CLIENT_ID")
-    private Integer groClientId;
-
     // Attributes
     @Column(name = "AMOUNT", precision = 18, scale = 2, nullable = false)
     private BigDecimal amount;
@@ -55,9 +42,7 @@ public class Guaranty {
     private Long version;
 
     // Relationships
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "CLIENT_ID", insertable = false, updatable = false)
-    private Client client;
+  
 
     public Guaranty() {
     }
@@ -72,38 +57,6 @@ public class Guaranty {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
-    }
-
-    public Integer getGroupCompanyId() {
-        return groupCompanyId;
-    }
-
-    public void setGroupCompanyId(Integer groupCompanyId) {
-        this.groupCompanyId = groupCompanyId;
-    }
-
-    public String getGroupRoleId() {
-        return groupRoleId;
-    }
-
-    public void setGroupRoleId(String groupRoleId) {
-        this.groupRoleId = groupRoleId;
-    }
-
-    public Integer getGroClientId() {
-        return groClientId;
-    }
-
-    public void setGroClientId(Integer groClientId) {
-        this.groClientId = groClientId;
     }
 
     public BigDecimal getAmount() {
@@ -154,14 +107,6 @@ public class Guaranty {
         this.version = version;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -189,9 +134,8 @@ public class Guaranty {
 
     @Override
     public String toString() {
-        return "Guaranty [id=" + id + ", clientId=" + clientId + ", groupCompanyId=" + groupCompanyId + ", groupRoleId="
-                + groupRoleId + ", groClientId=" + groClientId + ", amount=" + amount + ", assetName=" + assetName
-                + ", type=" + type + ", guarantorType=" + guarantorType + ", state=" + state + ", version=" + version
-                + ", client=" + client + "]";
-    } 
+        return "Guaranty [id=" + id + ", amount=" + amount + ", assetName=" + assetName + ", type=" + type
+                + ", guarantorType=" + guarantorType + ", state=" + state + ", version=" + version + "]";
+    }
+
 }

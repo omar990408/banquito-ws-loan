@@ -99,17 +99,7 @@ public class Repayment {
     @JoinColumn(name = "LOAN_ID", referencedColumnName = "LOAN_ID", insertable = false, updatable = false, nullable = false)
     private Loan loan;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", insertable = false, updatable = false)
-    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "BRANCH_ID", insertable = false, updatable = false)
-    private Branch branch;
-
-    @ManyToOne
-    @JoinColumn(name = "ACCOUNT_TRANSACTION_ID", referencedColumnName = "ACCOUNT_TRANSACTION_ID", insertable = false, updatable = false, nullable = false)
-    private AccountTransaction accountTransaction;
 
     public Repayment() {
     }
@@ -302,29 +292,7 @@ public class Repayment {
         this.loan = loan;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Branch getBranch() {
-        return branch;
-    }
-
-    public void setBranch(Branch branch) {
-        this.branch = branch;
-    }
-
-    public AccountTransaction getAccountTransaction() {
-        return accountTransaction;
-    }
-
-    public void setAccountTransaction(AccountTransaction accountTransaction) {
-        this.accountTransaction = accountTransaction;
-    }
+ 
 
     @Override
     public int hashCode() {
@@ -360,8 +328,7 @@ public class Repayment {
                 + ", interestDue=" + interestDue + ", interestPaid=" + interestPaid + ", feesDue=" + feesDue
                 + ", feesPaid=" + feesPaid + ", penaltyDue=" + penaltyDue + ", penaltyPaid=" + penaltyPaid + ", notes="
                 + notes + ", taxInterestDue=" + taxInterestDue + ", taxInterestPaid=" + taxInterestPaid + ", version="
-                + version + ", loan=" + loan + ", user=" + user + ", branch=" + branch + ", accountTransaction="
-                + accountTransaction + "]";
+                + version + ", loan=" + loan + "]";
     }
-    
+
 }

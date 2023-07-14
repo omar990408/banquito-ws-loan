@@ -1,6 +1,5 @@
 package ec.edu.espe.arquitectura.banquito.loan.model;
 
-import java.sql.Date;
 
 import java.util.Date;
 
