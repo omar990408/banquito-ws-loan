@@ -16,22 +16,18 @@ public class LoanService {
     }
 
     public List<Loan> listByStateAndPattern(String state, String pattern) {
-        if (state != null) {
-            return this.loanRepository.findByState(state);
-        } 
-        else {
-            throw new RuntimeException("El Prestamo indicado " + pattern + " no existe");
-        }
+        return loanRepository.findByStateAndPattern(state, pattern);
 
     }
 
     @Transactional  
     public Loan loanCreate(Loan loan) {
-        Loan loanTmp = this.loanRepository.findByClientId(loan.getId());
+        Optional<Loan> loanTmp = this.loanRepository.findById(loan.getId());
         if (loanTmp == null) {
 
 
         }
+        return loan;
     
     }
 
