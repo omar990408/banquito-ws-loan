@@ -17,7 +17,7 @@ public class LoanService {
 
     public List<Loan> listByStateAndPattern(String state, String pattern) {
         if (state != null) {
-            return this.loanRepository.findByAccountHolderCode(pattern);
+            return this.loanRepository.findByState(state);
         } 
         else {
             throw new RuntimeException("El Prestamo indicado " + pattern + " no existe");
