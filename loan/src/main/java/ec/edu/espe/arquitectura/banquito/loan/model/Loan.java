@@ -156,8 +156,6 @@ public class Loan {
     @JoinColumn(name = "GUARANTY_ID", referencedColumnName = "GUARANTY_ID", insertable = false, updatable = false)
     private Guaranty guaranty;
 
-    @OneToMany(mappedBy = "parentLoan", cascade = CascadeType.ALL)
-    private List<Loan> childrenLoan;
 
     public Loan() {
     }
@@ -488,13 +486,8 @@ public class Loan {
         this.guaranty = guaranty;
     }
 
-    public List<Loan> getChildrenLoan() {
-        return childrenLoan;
-    }
 
-    public void setChildrenLoan(List<Loan> childrenLoan) {
-        this.childrenLoan = childrenLoan;
-    }
+
 
     
 
@@ -525,26 +518,47 @@ public class Loan {
 
     @Override
     public String toString() {
-        return "Loan [id=" + id + ", clientId=" + clientId + ", groupCompanyId=" + groupCompanyId + ", groupRoleId="
-                + groupRoleId + ", groClientId=" + groClientId + ", branchId=" + branchId + ", userId=" + userId
-                + ", loanProductId=" + loanProductId + ", guarantyId=" + guarantyId + ", accountHolderType="
-                + accountHolderType + ", creationDate=" + creationDate + ", approvedDate=" + approvedDate
-                + ", lastModifiedDate=" + lastModifiedDate + ", state=" + state + ", name=" + name + ", amount="
-                + amount + ", principalDue=" + principalDue + ", interestDue=" + interestDue + ", interestPaid="
-                + interestPaid + ", feesDue=" + feesDue + ", feesPaid=" + feesPaid + ", penalityDue=" + penalityDue
-                + ", penalityPaid=" + penalityPaid + ", repaymentPeriodCount=" + repaymentPeriodCount
-                + ", repaymentPeriodUnit=" + repaymentPeriodUnit + ", repaymentInstallments=" + repaymentInstallments
-                + ", gracePeriodType=" + gracePeriodType + ", gracePeriod=" + gracePeriod + ", interestRate="
-                + interestRate + ", interestChargeFrequence=" + interestChargeFrequence + ", interestCalculationMethod="
-                + interestCalculationMethod + ", notes=" + notes + ", lastAccountAppraisalDate="
-                + lastAccountAppraisalDate + ", scheduleDueDatesMethod=" + scheduleDueDatesMethod
-                + ", fixedDaysOfMonth=" + fixedDaysOfMonth + ", taxRate=" + taxRate + ", penaltyRate=" + penaltyRate
-                + ", principalPaid=" + principalPaid + ", version=" + version + ", guaranty=" + guaranty
-                + ", childrenLoan=" + childrenLoan + "]";
+        return "Loan{" +
+                "id=" + id +
+                ", clientId=" + clientId +
+                ", groupCompanyId=" + groupCompanyId +
+                ", groupRoleId='" + groupRoleId + '\'' +
+                ", groClientId=" + groClientId +
+                ", branchId=" + branchId +
+                ", userId=" + userId +
+                ", loanProductId=" + loanProductId +
+                ", guarantyId=" + guarantyId +
+                ", accountHolderType='" + accountHolderType + '\'' +
+                ", creationDate=" + creationDate +
+                ", approvedDate=" + approvedDate +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", state='" + state + '\'' +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", principalDue=" + principalDue +
+                ", interestDue=" + interestDue +
+                ", interestPaid=" + interestPaid +
+                ", feesDue=" + feesDue +
+                ", feesPaid=" + feesPaid +
+                ", penalityDue=" + penalityDue +
+                ", penalityPaid=" + penalityPaid +
+                ", repaymentPeriodCount=" + repaymentPeriodCount +
+                ", repaymentPeriodUnit='" + repaymentPeriodUnit + '\'' +
+                ", repaymentInstallments=" + repaymentInstallments +
+                ", gracePeriodType='" + gracePeriodType + '\'' +
+                ", gracePeriod=" + gracePeriod +
+                ", interestRate=" + interestRate +
+                ", interestChargeFrequence='" + interestChargeFrequence + '\'' +
+                ", interestCalculationMethod='" + interestCalculationMethod + '\'' +
+                ", notes='" + notes + '\'' +
+                ", lastAccountAppraisalDate=" + lastAccountAppraisalDate +
+                ", scheduleDueDatesMethod='" + scheduleDueDatesMethod + '\'' +
+                ", fixedDaysOfMonth=" + fixedDaysOfMonth +
+                ", taxRate=" + taxRate +
+                ", penaltyRate=" + penaltyRate +
+                ", principalPaid=" + principalPaid +
+                ", version=" + version +
+                ", guaranty=" + guaranty +
+                '}';
     }
-
-   
-
-
-    
 }

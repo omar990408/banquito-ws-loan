@@ -9,18 +9,20 @@ import ec.edu.espe.arquitectura.banquito.loan.repository.AmortizationRepository;
 import ec.edu.espe.arquitectura.banquito.loan.repository.LoanRepository;
 import ec.edu.espe.arquitectura.banquito.loan.repository.LoanTransactionRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoanService {
 
     private final LoanRepository loanRepository;
-    private final LoanTransactionRepository loanTransactionRepository;
-    private final AmortizationRepository amortizationRepository;
+   // private final LoanTransactionRepository loanTransactionRepository;
+    //private final AmortizationRepository amortizationRepository;
 
 
     public LoanService(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
-        this.loanTransactionRepository = loanTransactionRepository;
-        this.amortizationRepository = amortizationRepository;
+       // this.loanTransactionRepository = loanTransactionRepository;
+        //this.amortizationRepository = amortizationRepository;
     }
 
     public List<Loan> obtainfindByClientId(Integer clientId) {
