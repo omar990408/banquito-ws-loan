@@ -9,7 +9,8 @@ import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Integer> {
 
-    List<Loan> findByStateAndPattern(String state, String pattern);
+    List<Loan> obtainfindByClientId(Integer clientId);
+    List<Loan> findByClientId(Integer clientId);
 
 }
     
