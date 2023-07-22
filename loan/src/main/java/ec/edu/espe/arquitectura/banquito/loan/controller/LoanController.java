@@ -1,13 +1,15 @@
 package ec.edu.espe.arquitectura.banquito.loan.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRQ;
+import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRS;
 import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.service.LoanService;
 
@@ -21,14 +23,25 @@ public class LoanController {
         this.loanService = loanService;
     }
 
-     @PostMapping
-    public ResponseEntity<String> createLoan(@RequestBody LoanRQ loan) {
+    @GetMapping("/{id}")
+    public ResponseEntity<LoanRS> obtainByUuid(
+            @PathVariable(name = "id") Integer id) {
         try {
-            //Loan loanRS = this.loanService.createLoan(loan);
-            this.loanService.createLoan(loan);
-            return ResponseEntity.ok("Operacion exitosa");
+            LoanRS loan = this.loanService.listById(id);
+            return ResponseEntity.ok(loan);
         } catch (RuntimeException rte) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rte.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    @PostMapping
+    public ResponseEntity<Loan> createLoan(@RequestBody LoanRQ loan) {
+        try {
+            Loan loanRS = this.loanService.createLoan(loan);
+            return ResponseEntity.ok(loanRS);
+        } catch (RuntimeException rte) {
+            return ResponseEntity.badRequest().build();
 
         }
     }
