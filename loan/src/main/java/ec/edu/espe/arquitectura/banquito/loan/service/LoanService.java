@@ -5,6 +5,7 @@ import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class LoanService {
                 loan.setInterestDue(null);
                 loan.setPenalityDue(null);
                 loan.setRepaymentInstallments(null);
+                loan.setInterestRate(new BigDecimal(0.15));
             }
 
             return this.loanRepository.save(loan);
