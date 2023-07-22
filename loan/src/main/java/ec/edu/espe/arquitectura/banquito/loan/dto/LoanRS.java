@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 @Builder
 public class LoanRS {
+    private Integer id;
+    private String uuid;
     private Integer accountId;
     private Integer guarantyId;
     private Integer branchId;

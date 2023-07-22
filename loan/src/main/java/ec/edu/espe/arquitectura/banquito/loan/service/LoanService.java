@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -22,9 +21,8 @@ public class LoanService {
         this.loanRepository = loanRepository;
     }
 
-    public LoanRS listById(Integer id) {
-        Optional<Loan> loanOpt = this.loanRepository.findById(id);
-        Loan loan = loanOpt.get();
+    public LoanRS listById(String uuid) {
+        Loan loan = this.loanRepository.findByUuid(uuid);
         LoanRS loanTmp = this.transformLoanRS(loan);
         if (loanTmp == null) {
             throw new RuntimeException("Parametros de búsqueda incorrectos");
@@ -156,7 +154,8 @@ public class LoanService {
                 .approvedDate(loan.getApprovedDate()).lastModifiedDate(loan.getLastModifiedDate())
                 .principalDue(loan.getPrincipalDue()).interestDue(loan.getInterestDue())
                 .penalityDue(loan.getPenalityDue())
-                .repaymentInstallments(loan.getRepaymentInstallments()).interestRate(loan.getInterestRate()).build();
+                .repaymentInstallments(loan.getRepaymentInstallments()).interestRate(loan.getInterestRate())
+                .uuid(loan.getUuid()).id(loan.getId()).build();
         return rs;
 
     }

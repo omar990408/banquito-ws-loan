@@ -14,20 +14,26 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "LOAN")
-@Data
-@Builder
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class Loan {
     // Primary Key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LOAN_ID", nullable = false)
     private Integer id;
-    
+
     @Column(name = "UUID", nullable = false)
     private String uuid;
 
@@ -43,9 +49,6 @@ public class Loan {
 
     @Column(name = "LOAN_PRODUCT_ID", nullable = false)
     private String loanProductId;
-
-    
-
 
     // Attributes
     @Column(name = "ACCOUNT_HOLDER_TYPE", length = 3, nullable = false)

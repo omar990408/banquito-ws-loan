@@ -23,11 +23,11 @@ public class LoanController {
         this.loanService = loanService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{uuid}")
     public ResponseEntity<LoanRS> obtainByUuid(
-            @PathVariable(name = "id") Integer id) {
+            @PathVariable(name = "uuid") String uuid) {
         try {
-            LoanRS loan = this.loanService.listById(id);
+            LoanRS loan = this.loanService.listById(uuid);
             return ResponseEntity.ok(loan);
         } catch (RuntimeException rte) {
             return ResponseEntity.notFound().build();
