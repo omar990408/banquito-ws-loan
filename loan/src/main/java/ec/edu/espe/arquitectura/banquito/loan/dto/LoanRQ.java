@@ -11,7 +11,7 @@ public class LoanRQ {
     private Integer accountId;
     private Integer guarantyId;
     private Integer branchId;
-    private Integer loanProductId;
+    private String loanProductId;
     private String accountHolderType;
     //private Date creationDate;
     //private Date approvedDate;

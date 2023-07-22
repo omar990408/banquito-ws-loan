@@ -42,7 +42,7 @@ public class Loan {
     private Integer branchId;
 
     @Column(name = "LOAN_PRODUCT_ID", nullable = false)
-    private Integer loanProductId;
+    private String loanProductId;
 
     
 
@@ -84,10 +84,10 @@ public class Loan {
     @Column(name = "INTEREST_PAID", precision = 18, scale = 2, nullable = false)
     private BigDecimal interestPaid;
 
-    @Column(name = "PENALTY_DUE", precision = 18, scale = 2, nullable = false)
+    @Column(name = "PENALTY_DUE", precision = 18, scale = 2)
     private BigDecimal penalityDue;
 
-    @Column(name = "PENALTY_PAID", precision = 18, scale = 2, nullable = false)
+    @Column(name = "PENALTY_PAID", precision = 18, scale = 2)
     private BigDecimal penalityPaid;
 
     @Column(name = "REPAYMENT_PERIOD_COUNT", nullable = false)
@@ -101,12 +101,6 @@ public class Loan {
 
     @Column(name = "INTEREST_RATE", precision = 3, scale = 2, nullable = false)
     private BigDecimal interestRate;
-
-    @Column(name = "SCHEDULE_DUE_DATES_METHOD", length = 3, nullable = false)
-    private String scheduleDueDatesMethod;
-
-    @Column(name = "FIXED_DAYS_OF_MONTH", nullable = false)
-    private Integer fixedDaysOfMonth;
 
     @Version
     @Column(name = "VERSION", nullable = false)

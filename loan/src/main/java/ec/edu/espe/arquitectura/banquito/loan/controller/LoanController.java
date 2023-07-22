@@ -1,12 +1,18 @@
 package ec.edu.espe.arquitectura.banquito.loan.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRQ;
+import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.service.LoanService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/v2/loans")
 public class LoanController {
     private final LoanService loanService;
 
@@ -15,4 +21,15 @@ public class LoanController {
         this.loanService = loanService;
     }
 
+     @PostMapping
+    public ResponseEntity<String> createLoan(@RequestBody LoanRQ loan) {
+        try {
+            //Loan loanRS = this.loanService.createLoan(loan);
+            this.loanService.createLoan(loan);
+            return ResponseEntity.ok("Operacion exitosa");
+        } catch (RuntimeException rte) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rte.getMessage());
+
+        }
+    }
 }
