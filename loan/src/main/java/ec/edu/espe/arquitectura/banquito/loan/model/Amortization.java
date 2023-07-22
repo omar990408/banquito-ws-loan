@@ -14,9 +14,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Table(name = "AMORTIZATION")
+@Data
+@Builder
 public class Amortization {
     // Primary Key
     @Id
@@ -29,6 +33,9 @@ public class Amortization {
     private Integer loanId;
 
     // Attributes
+    @Column(name = "TYPE", length = 3, nullable = false)
+    private String type;
+
     @Column(name = "QUOTA_NUM", nullable = false)
     private Integer quotaNum;
 
@@ -64,139 +71,4 @@ public class Amortization {
     @JoinColumn(name = "LOAN_ID", referencedColumnName = "LOAN_ID", insertable = false, updatable = false, nullable = false)
     private Loan loan;
 
-    public Amortization() {
-    }
-
-    public Amortization(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getLoanId() {
-        return loanId;
-    }
-
-    public void setLoanId(Integer loanId) {
-        this.loanId = loanId;
-    }
-
-    public Integer getQuotaNum() {
-        return quotaNum;
-    }
-
-    public void setQuotaNum(Integer quotaNum) {
-        this.quotaNum = quotaNum;
-    }
-
-    public BigDecimal getRemainingBalance() {
-        return remainingBalance;
-    }
-
-    public void setRemainingBalance(BigDecimal remainingBalance) {
-        this.remainingBalance = remainingBalance;
-    }
-
-    public BigDecimal getQuotaCapital() {
-        return quotaCapital;
-    }
-
-    public void setQuotaCapital(BigDecimal quotaCapital) {
-        this.quotaCapital = quotaCapital;
-    }
-
-    public BigDecimal getQuotaInterest() {
-        return quotaInterest;
-    }
-
-    public void setQuotaInterest(BigDecimal quotaInterest) {
-        this.quotaInterest = quotaInterest;
-    }
-
-    public BigDecimal getQuotaAmount() {
-        return quotaAmount;
-    }
-
-    public void setQuotaAmount(BigDecimal quotaAmount) {
-        this.quotaAmount = quotaAmount;
-    }
-
-    public BigDecimal getQuotaStatus() {
-        return quotaStatus;
-    }
-
-    public void setQuotaStatus(BigDecimal quotaStatus) {
-        this.quotaStatus = quotaStatus;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    public Loan getLoan() {
-        return loan;
-    }
-
-    public void setLoan(Loan loan) {
-        this.loan = loan;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Amortization other = (Amortization) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Amortization [id=" + id + ", loanId=" + loanId + ", quotaNum=" + quotaNum + ", remainingBalance="
-                + remainingBalance + ", quotaCapital=" + quotaCapital + ", quotaInterest=" + quotaInterest
-                + ", quotaAmount=" + quotaAmount + ", quotaStatus=" + quotaStatus + ", creationDate=" + creationDate
-                + ", lastModifiedDate=" + lastModifiedDate + ", version=" + version + ", loan=" + loan + "]";
-    }
 }
