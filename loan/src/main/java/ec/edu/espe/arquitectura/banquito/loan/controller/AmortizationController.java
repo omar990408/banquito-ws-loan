@@ -5,10 +5,7 @@ import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationRS;
 import ec.edu.espe.arquitectura.banquito.loan.model.Amortization;
 import ec.edu.espe.arquitectura.banquito.loan.service.AmortizationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +18,13 @@ public class AmortizationController {
         this.amortizationService = amortizationService;
     }
     @PostMapping("/generate")
-    public ResponseEntity<List<AmortizationRS>> generateAmortization(@RequestBody AmortizationRQ amortizationRQ) {
+    public ResponseEntity<List<Amortization>> generateAmortization(@RequestBody AmortizationRQ amortizationRQ) {
         return ResponseEntity.ok(amortizationService.generateAmortization(amortizationRQ));
+    }
+
+    @GetMapping("findByLoan/{uuid}")
+    public ResponseEntity<List<AmortizationRS>> findByLoan(@PathVariable(name = "uuid") String uuid) {
+        return ResponseEntity.ok(amortizationService.findByLoanUuid(uuid));
     }
 
 }

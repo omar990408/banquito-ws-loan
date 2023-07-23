@@ -26,10 +26,10 @@ public class AmortizationService {
     }
 
     @Transactional
-    public List<AmortizationRS> generateAmortization(AmortizationRQ amortizationRQ) {
+    public List<Amortization> generateAmortization(AmortizationRQ amortizationRQ) {
         Loan loan = loanRepository.findById(amortizationRQ.getLoanId()).orElseThrow(() -> new RuntimeException("Loan not found"));
 
-        BigDecimal tasaInteresMensual =  loan.getInterestRate();
+        BigDecimal tasaInteresMensual =  BigDecimal.valueOf(loan.getInterestRate().doubleValue() / 12.0);
         BigDecimal cuotaMensual = calcularCuotaMensual(
                 loan.getAmount(),
                 tasaInteresMensual,
@@ -64,14 +64,26 @@ public class AmortizationService {
             calendar.add(Calendar.MONTH, 1);
             amortizationList.add(amortization);
         }
-        amortizationRepository.saveAll(amortizationList);
-        return toAmortizationRSList(amortizationList);
+        return amortizationRepository.saveAll(amortizationList);
     }
 
     private BigDecimal calcularCuotaMensual(BigDecimal amount, BigDecimal tasaInteresMensual, Integer repaymentInstallments) {
         double factor = Math.pow(1 + tasaInteresMensual.doubleValue(), repaymentInstallments);
         double quota = amount.doubleValue() * tasaInteresMensual.doubleValue() * factor / (factor - 1);
         return BigDecimal.valueOf(quota);
+    }
+
+    public List<AmortizationRS> findByLoanUuid(String uuid) {
+        List<Amortization> amortizationList = getByLoanUuid(uuid);
+        return toAmortizationRSList(amortizationList);
+    }
+
+    private List<Amortization> getByLoanUuid(String uuid) {
+        List<Amortization> amortizationList = amortizationRepository.findByLoan_Uuid(uuid);
+        if (amortizationList.isEmpty()) {
+            throw new RuntimeException("Amortization not found");
+        }
+        return amortizationList;
     }
 
     private List<AmortizationRS> toAmortizationRSList(List<Amortization> amortizationList) {
