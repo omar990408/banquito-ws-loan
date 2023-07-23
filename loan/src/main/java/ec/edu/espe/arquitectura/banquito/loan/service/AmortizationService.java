@@ -58,9 +58,13 @@ public class AmortizationService {
                         .quotaInterest(quotaInterest)
                         .quotaAmount(cuotaMensual)
                         .remainingBalance(remainingBalance)
-                        .quotaStatus("CUR")
                         .dueDate(calendar.getTime())
                         .build();
+                if (i == 0) {
+                    amortization.setQuotaStatus("CUR");
+                } else {
+                    amortization.setQuotaStatus("PEN");
+                }
                 calendar.add(Calendar.MONTH, 1);
                 amortizationList.add(amortization);
             }
@@ -85,10 +89,14 @@ public class AmortizationService {
                         .quotaInterest(quotaInterest)
                         .quotaAmount(quotaAmount)
                         .remainingBalance(remainingBalance)
-                        .quotaStatus("CUR")
                         .dueDate(calendar.getTime())
                         .build();
                 calendar.add(Calendar.MONTH, 1);
+                if (i == 0) {
+                    amortization.setQuotaStatus("CUR");
+                } else {
+                    amortization.setQuotaStatus("PEN");
+                }
                 amortizationList.add(amortization);
             }
             return amortizationRepository.saveAll(amortizationList);

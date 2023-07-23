@@ -34,6 +34,9 @@ public class Repayment {
     @Column(name = "LOAN_ID", nullable = false)
     private Integer loanId;
 
+    @Column(name = "AMORTIZATION_ID", nullable = false)
+    private Integer amortizationId;
+
     @Column(name = "BRANCH_ID")
     private Integer branchId;
 
@@ -49,7 +52,7 @@ public class Repayment {
     private Date dueDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "REPAID_DATE", nullable = false)
+    @Column(name = "REPAID_DATE",nullable = false)
     private Date repaidDate;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -86,5 +89,9 @@ public class Repayment {
     @ManyToOne
     @JoinColumn(name = "LOAN_ID", referencedColumnName = "LOAN_ID", insertable = false, updatable = false, nullable = false)
     private Loan loan;
+
+    @ManyToOne
+    @JoinColumn(name = "AMORTIZATION_ID", referencedColumnName = "AMORTIZATION_ID", insertable = false, updatable = false, nullable = false)
+    private Amortization amortization;
 
 }
