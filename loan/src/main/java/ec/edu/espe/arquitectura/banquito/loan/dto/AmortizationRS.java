@@ -12,6 +12,7 @@ import java.util.Date;
 @Getter
 public class AmortizationRS {
     Integer id;
+    String loanUuid;
     String uuid;
     String type;
     Integer quotaNum;

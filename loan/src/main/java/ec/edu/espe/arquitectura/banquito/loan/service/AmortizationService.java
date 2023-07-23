@@ -121,6 +121,14 @@ public class AmortizationService {
         return toAmortizationRSList(amortizationList);
     }
 
+    public List<AmortizationRS> findByLoanUuidAndQuotaStatus(String uuid, String quotaStatus) {
+        List<Amortization> amortizationList = amortizationRepository.findByLoan_Uuid_AndQuotaStatus(uuid, quotaStatus);
+        if (amortizationList.isEmpty()) {
+            throw new RuntimeException("Amortization not found");
+        }
+        return toAmortizationRSList(amortizationList);
+    }
+
     private List<Amortization> getByLoanUuid(String uuid) {
         List<Amortization> amortizationList = amortizationRepository.findByLoan_Uuid(uuid);
         if (amortizationList.isEmpty()) {
@@ -134,6 +142,7 @@ public class AmortizationService {
         for (Amortization amortization : amortizationList) {
             AmortizationRS amortizationRS = new AmortizationRS();
             amortizationRS.setId(amortization.getId());
+            amortizationRS.setLoanUuid(amortization.getLoan().getUuid());
             amortizationRS.setUuid(amortization.getUuid());
             amortizationRS.setType(amortization.getType());
             amortizationRS.setQuotaNum(amortization.getQuotaNum());

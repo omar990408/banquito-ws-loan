@@ -22,9 +22,14 @@ public class AmortizationController {
         return ResponseEntity.ok(amortizationService.generateAmortization(amortizationRQ));
     }
 
-    @GetMapping("findByLoan/{uuid}")
+    @GetMapping("/findByLoan/{uuid}")
     public ResponseEntity<List<AmortizationRS>> findByLoan(@PathVariable(name = "uuid") String uuid) {
         return ResponseEntity.ok(amortizationService.findByLoanUuid(uuid));
+    }
+
+    @GetMapping("/findByLoan-status/{uuid}/{quotaStatus}")
+    public ResponseEntity<List<AmortizationRS>> findByLoanAndQuotaStatus(@PathVariable(name = "uuid") String uuid, @PathVariable(name = "quotaStatus") String quotaStatus) {
+        return ResponseEntity.ok(amortizationService.findByLoanUuidAndQuotaStatus(uuid, quotaStatus));
     }
 
 }

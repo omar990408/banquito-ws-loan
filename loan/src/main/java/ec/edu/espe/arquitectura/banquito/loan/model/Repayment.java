@@ -2,19 +2,11 @@ package ec.edu.espe.arquitectura.banquito.loan.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "REPAYMENT")
@@ -23,6 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Repayment {
     // Primary Key
     @Id
@@ -44,6 +37,9 @@ public class Repayment {
     private Integer accountTransactionId;
 
     // Attributes
+    @Column(name = "UUID", length = 36, nullable = false)
+    private String uuid;
+
     @Column(name = "STATE", length = 3, nullable = false)
     private String state;
 
@@ -56,11 +52,7 @@ public class Repayment {
     private Date repaidDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "LAST_PAID_DATE", nullable = false)
-    private Date lastPaidDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "LAST_PENALTY_APPLIED_DATE", nullable = false)
+    @Column(name = "LAST_PENALTY_APPLIED_DATE")
     private Date lastPenaltyAppliedDate;
 
     @Column(name = "PRINCIPAL_DUE", precision = 18, scale = 2, nullable = false)
@@ -93,5 +85,10 @@ public class Repayment {
     @ManyToOne
     @JoinColumn(name = "AMORTIZATION_ID", referencedColumnName = "AMORTIZATION_ID", insertable = false, updatable = false, nullable = false)
     private Amortization amortization;
+
+    @PrePersist
+    public void prePersist() {
+        this.uuid = UUID.randomUUID().toString();
+    }
 
 }
