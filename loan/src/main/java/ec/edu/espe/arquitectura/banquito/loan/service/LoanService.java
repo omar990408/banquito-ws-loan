@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -152,6 +153,25 @@ public class LoanService {
         }
 
         return this.guarantyRepository.save(guaranty);
+    }
+
+    @Transactional
+    public Loan addGuarantyToLoan(LoanRQ loanRQ, String uuid) {
+        Loan loan = this.transformLoanRQ(loanRQ);
+        Loan loanTmp = this.loanRepository.findByUuid(uuid);
+        Optional<Guaranty> guarantyOpt = this.guarantyRepository.findById(loan.getGuarantyId());
+        if (loanTmp != null) {
+            Guaranty guaranty = guarantyOpt.get();
+            if(!guaranty.getId().equals(loan.getGuarantyId())){
+                throw new RuntimeException("No existe la garantía con Id: "+ loan.getGuarantyId());
+            }
+            loanTmp.setGuarantyId(loan.getGuarantyId());
+            loanTmp.setLastModifiedDate(new Date());
+            return this.loanRepository.save(loanTmp);
+
+        } else {
+            throw new RuntimeException("El préstamo no está registrado");
+        }
     }
 
     private Loan transformLoanRQ(LoanRQ rq) {
