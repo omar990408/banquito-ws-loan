@@ -3,24 +3,20 @@ package ec.edu.espe.arquitectura.banquito.loan.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.persistence.Version;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "AMORTIZATION")
-@Data
-@Builder
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Amortization {
     // Primary Key
     @Id
@@ -33,6 +29,9 @@ public class Amortization {
     private Integer loanId;
 
     // Attributes
+    @Column(name = "UUID", length = 36, nullable = false)
+    private String uuid;
+
     @Column(name = "TYPE", length = 3, nullable = false)
     private String type;
 
@@ -52,23 +51,37 @@ public class Amortization {
     private BigDecimal quotaAmount;
 
     @Column(name = "QUOTA_STATUS", precision = 18, scale = 2, nullable = false)
-    private BigDecimal quotaStatus;
+    private String quotaStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     @Column(name = "CREATION_DATE", nullable = false)
     private Date creationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "LAST_MODIFIED_DATE", nullable = false)
+    @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE")
     private Date lastModifiedDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DUE_DATE", nullable = false)
+    private Date dueDate;
 
     @Version
     @Column(name = "VERSION", nullable = false)
     private Long version;
 
+
+
     // Relationships
     @ManyToOne
     @JoinColumn(name = "LOAN_ID", referencedColumnName = "LOAN_ID", insertable = false, updatable = false, nullable = false)
     private Loan loan;
+
+    @PrePersist
+    public void prePersist() {
+        this.creationDate = new Date();
+        this.uuid = java.util.UUID.randomUUID().toString();
+    }
 
 }

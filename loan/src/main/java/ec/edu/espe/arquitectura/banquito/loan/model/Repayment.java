@@ -14,9 +14,15 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
+import lombok.*;
 
 @Entity
 @Table(name = "REPAYMENT")
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class Repayment {
     // Primary Key
     @Id
