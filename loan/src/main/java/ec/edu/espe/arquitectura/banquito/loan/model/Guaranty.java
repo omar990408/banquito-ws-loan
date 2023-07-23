@@ -35,14 +35,15 @@ public class Guaranty {
     private String groupCompanyId;
 
     // Attributes
-    @Column(name = "ASSET_NAME", length = 100, nullable = false)
+
+    @Column(name = "CODE", length = 10, nullable = false)
+    private String code;
+
+    @Column(name = "ASSET_NAME", length = 100)
     private String assetName;
 
     @Column(name = "TYPE", length = 3, nullable = false)
     private String type;
-
-    @Column(name = "GUARANTOR_TYPE", length = 3, nullable = false)
-    private String guarantorType;
 
     @Column(name = "STATE", length = 3, nullable = false)
     private String state;

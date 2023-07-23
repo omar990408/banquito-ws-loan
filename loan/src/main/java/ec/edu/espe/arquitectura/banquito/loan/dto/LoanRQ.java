@@ -2,11 +2,17 @@ package ec.edu.espe.arquitectura.banquito.loan.dto;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Builder
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class LoanRQ {
     private Integer accountId;
     private Integer guarantyId;

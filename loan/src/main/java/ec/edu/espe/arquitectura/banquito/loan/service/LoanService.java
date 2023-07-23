@@ -1,8 +1,11 @@
 package ec.edu.espe.arquitectura.banquito.loan.service;
 
+import ec.edu.espe.arquitectura.banquito.loan.dto.GuarantyRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRS;
+import ec.edu.espe.arquitectura.banquito.loan.model.Guaranty;
 import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
+import ec.edu.espe.arquitectura.banquito.loan.repository.GuarantyRepository;
 import ec.edu.espe.arquitectura.banquito.loan.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 
@@ -16,9 +19,11 @@ import org.springframework.stereotype.Service;
 public class LoanService {
 
     private final LoanRepository loanRepository;
+    private final GuarantyRepository guarantyRepository;
 
-    public LoanService(LoanRepository loanRepository) {
+    public LoanService(LoanRepository loanRepository, GuarantyRepository guarantyRepository) {
         this.loanRepository = loanRepository;
+        this.guarantyRepository = guarantyRepository;
     }
 
     public LoanRS listById(String uuid) {
@@ -132,6 +137,23 @@ public class LoanService {
         }
     }
 
+    @Transactional
+    public Guaranty createGuaranty(GuarantyRQ guarantyRQ) {
+        Guaranty guaranty = this.transformGuarantyRQ(guarantyRQ);
+        Guaranty guarantyTmp = this.guarantyRepository.findByCode(guaranty.getCode());
+        if (guarantyTmp == null) {
+            guaranty.setState("ACT");
+            if (guaranty.getClientId() != null || guaranty.getGroupCompanyId() != null) {
+                guaranty.setType("GUA");
+            }
+            if (guaranty.getAssetName() != null) {
+                guaranty.setType("ASS");
+            }
+        }
+
+        return this.guarantyRepository.save(guaranty);
+    }
+
     private Loan transformLoanRQ(LoanRQ rq) {
         Loan loan = Loan.builder().accountId(rq.getAccountId()).guarantyId(rq.getGuarantyId())
                 .branchId(rq.getBranchId()).loanProductId(rq.getLoanProductId())
@@ -159,4 +181,12 @@ public class LoanService {
         return rs;
 
     }
+
+    private Guaranty transformGuarantyRQ(GuarantyRQ rq) {
+        Guaranty guaranty = Guaranty.builder().clientId(rq.getClientId()).groupCompanyId(rq.getGroupCompanyId())
+                .assetName(rq.getAssetName()).type(rq.getType()).state(rq.getState()).code(rq.getCode()).build();
+
+        return guaranty;
+    }
+
 }

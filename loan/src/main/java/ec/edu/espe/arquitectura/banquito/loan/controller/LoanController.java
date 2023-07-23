@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ec.edu.espe.arquitectura.banquito.loan.dto.GuarantyRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRS;
+import ec.edu.espe.arquitectura.banquito.loan.model.Guaranty;
 import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.service.LoanService;
 
@@ -17,6 +19,7 @@ import ec.edu.espe.arquitectura.banquito.loan.service.LoanService;
 @RequestMapping("/api/v2/loans")
 public class LoanController {
     private final LoanService loanService;
+
 
     public LoanController(LoanService loanService) {
 
@@ -40,6 +43,17 @@ public class LoanController {
         try {
             Loan loanRS = this.loanService.createLoan(loan);
             return ResponseEntity.ok(loanRS);
+        } catch (RuntimeException rte) {
+            return ResponseEntity.badRequest().build();
+
+        }
+    }
+
+     @PostMapping("/guaranty")
+    public ResponseEntity<Guaranty> createGuaranty(@RequestBody GuarantyRQ guaranty) {
+        try {
+            Guaranty guarantyRS = this.loanService.createGuaranty(guaranty);
+            return ResponseEntity.ok(guarantyRS);
         } catch (RuntimeException rte) {
             return ResponseEntity.badRequest().build();
 
