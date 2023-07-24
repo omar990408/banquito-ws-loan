@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import ec.edu.espe.arquitectura.banquito.loan.dto.GuarantyRQ;
+import ec.edu.espe.arquitectura.banquito.loan.dto.LoanProductRS;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRS;
 import ec.edu.espe.arquitectura.banquito.loan.model.Guaranty;
@@ -21,10 +23,11 @@ import ec.edu.espe.arquitectura.banquito.loan.service.LoanService;
 @RequestMapping("/api/v2/loans")
 public class LoanController {
     private final LoanService loanService;
+    private final RestTemplate restTemplate;
 
-    public LoanController(LoanService loanService) {
-
+    public LoanController(LoanService loanService, RestTemplate restTemplate) {
         this.loanService = loanService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/{uuid}")
@@ -65,7 +68,7 @@ public class LoanController {
     public ResponseEntity<String> addGuarantyToLoan(@RequestBody LoanRQ loan,
             @PathVariable(name = "uuid") String uuid) {
         try {
-            //Loan loanRS = this.loanService.addGuarantyToLoan(loan);
+            // Loan loanRS = this.loanService.addGuarantyToLoan(loan);
             this.loanService.addGuarantyToLoan(loan, uuid);
             return ResponseEntity.ok("ok");
         } catch (RuntimeException rte) {
@@ -73,4 +76,28 @@ public class LoanController {
 
         }
     }
+
+    @GetMapping("/products/{uuid}")
+    public ResponseEntity<LoanProductRS> obtainProductByUuid(
+            @PathVariable(name = "uuid") String uuid) {
+        try {
+            String url = "http://localhost:9004/api/v1/loanProduct/productos/" + uuid;
+            LoanProductRS loanProduct = this.restTemplate.getForObject(url, LoanProductRS.class);
+            return ResponseEntity.ok(loanProduct);
+        } catch (RuntimeException rte) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/products")
+    public ResponseEntity<LoanProductRS[]> obtainProducts() {
+        try {
+            String url = "http://localhost:9004/api/v1/loanProduct/productos";
+            LoanProductRS[] products = this.restTemplate.getForEntity(url, LoanProductRS[].class).getBody();
+            return ResponseEntity.ok(products);
+        } catch (RuntimeException rte) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
