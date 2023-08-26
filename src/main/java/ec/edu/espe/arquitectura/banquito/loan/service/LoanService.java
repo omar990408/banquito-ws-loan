@@ -56,8 +56,9 @@ public class LoanService {
                 if (loan.getAmount().compareTo(new BigDecimal(300)) < 0) {
                     throw new RuntimeException("El monto no puede ser menor de $300 en este préstamo");
                 }
-                loan.setInterestDue(new BigDecimal(100));// Próximo parcial
-                loan.setPrincipalDue(loan.getAmount().add(new BigDecimal(100)));
+                loan.setInterestDue(this.obtainInterest(BigDecimal.valueOf(0.15),loan.getAmount(),
+                        loan.getRepaymentPeriodUnit(), loan.getRepaymentPeriodCount()));// Próximo parcial
+                loan.setPrincipalDue(loan.getAmount().add(loan.getInterestDue()));
                 loan.setPenalityDue(new BigDecimal(0));
                 if (loan.getRepaymentPeriodCount() < 3 && loan.getRepaymentPeriodUnit().equals("MON")) {
                     throw new RuntimeException("El periodo mínimo para este prestamo es de 3 meses");
@@ -67,7 +68,8 @@ public class LoanService {
                     throw new RuntimeException("El periodo máximo para este préstamo es de 5 años");
                 }
                 loan.setRepaymentInstallments(loan.getRepaymentPeriodCount());
-                loan.setInterestRate(new BigDecimal(0.15));
+                loan.setInterestRate(BigDecimal.valueOf(0.15));
+
             }
 
             if (loan.getLoanProductId().equals("2")) { // reemplazar por UUID de prestamo hipotecario cliente
@@ -77,8 +79,9 @@ public class LoanService {
                 if (!loan.getAccountHolderType().equals("CLI")) {
                     throw new RuntimeException("Este préstamo únicamente es para clientes naturales");
                 }
-                loan.setInterestDue(new BigDecimal(200));// Próximo parcial
-                loan.setPrincipalDue(loan.getAmount().add(new BigDecimal(200)));
+                loan.setInterestDue(this.obtainInterest(BigDecimal.valueOf(0.10),loan.getAmount(),
+                        loan.getRepaymentPeriodUnit(), loan.getRepaymentPeriodCount()));// Próximo parcial
+                loan.setPrincipalDue(loan.getAmount().add(loan.getInterestDue()));
                 loan.setPenalityDue(new BigDecimal(0));
                 if ((loan.getRepaymentPeriodCount() < 36 && loan.getRepaymentPeriodUnit().equals("MON"))
                         || (loan.getRepaymentPeriodCount() < 3 && loan.getRepaymentPeriodUnit().equals("YEA"))) {
@@ -89,7 +92,7 @@ public class LoanService {
                     throw new RuntimeException("El periodo máximo para este préstamo es de 20 años");
                 }
                 loan.setRepaymentInstallments(loan.getRepaymentPeriodCount());
-                loan.setInterestRate(new BigDecimal(0.10));
+                loan.setInterestRate(BigDecimal.valueOf(0.10));
             }
             if (loan.getLoanProductId().equals("3")) { // reemplazar por UUID de prestamo hipotecario empresa
                 if (loan.getAmount().compareTo(new BigDecimal(25000)) < 0) {
@@ -98,9 +101,9 @@ public class LoanService {
                 if (loan.getAccountHolderType().equals("CLI")) {
                     throw new RuntimeException("Este préstamo únicamente es para empresas o grupos");
                 }
-                loan.setInterestDue(new BigDecimal(100));// Próximo parcial
-                loan.setPrincipalDue(loan.getAmount().add(new BigDecimal(100)));
-                loan.setPenalityDue(new BigDecimal(0));
+                loan.setInterestDue(this.obtainInterest(BigDecimal.valueOf(0.05),loan.getAmount(),
+                        loan.getRepaymentPeriodUnit(), loan.getRepaymentPeriodCount()));// Próximo parcial
+                loan.setPrincipalDue(loan.getAmount().add(loan.getInterestDue()));
                 if ((loan.getRepaymentPeriodCount() < 240 && loan.getRepaymentPeriodUnit().equals("MON"))
                         || (loan.getRepaymentPeriodCount() < 20 && loan.getRepaymentPeriodUnit().equals("YEA"))) {
                     throw new RuntimeException("El periodo mínimo para este prestamo es de 20 años");
@@ -110,7 +113,7 @@ public class LoanService {
                     throw new RuntimeException("El periodo máximo para este préstamo es de 25 años");
                 }
                 loan.setRepaymentInstallments(loan.getRepaymentPeriodCount());
-                loan.setInterestRate(new BigDecimal(0.05));
+                loan.setInterestRate(BigDecimal.valueOf(0.05));
             }
             if (loan.getLoanProductId().equals("4")) { // reemplazar por UUID de prestamo vehicular
                 if (loan.getAmount().compareTo(new BigDecimal(150000)) > 0) {
@@ -119,8 +122,9 @@ public class LoanService {
                 if (loan.getAmount().compareTo(new BigDecimal(3000)) < 0) {
                     throw new RuntimeException("El monto no puede ser menor de $3.000 en este préstamo");
                 }
-                loan.setInterestDue(new BigDecimal(150));// Próximo parcial
-                loan.setPrincipalDue(loan.getAmount().add(new BigDecimal(150)));
+                loan.setInterestDue(this.obtainInterest(BigDecimal.valueOf(0.15),loan.getAmount(),
+                        loan.getRepaymentPeriodUnit(), loan.getRepaymentPeriodCount()));// Próximo parcial
+                loan.setPrincipalDue(loan.getAmount().add(loan.getInterestDue()));
                 loan.setPenalityDue(new BigDecimal(0));
                 if ((loan.getRepaymentPeriodCount() < 3 && loan.getRepaymentPeriodUnit().equals("MON"))) {
                     throw new RuntimeException("El periodo mínimo para este prestamo es de 3 meses");
@@ -130,7 +134,7 @@ public class LoanService {
                     throw new RuntimeException("El periodo máximo para este préstamo es de 6 años");
                 }
                 loan.setRepaymentInstallments(loan.getRepaymentPeriodCount());
-                loan.setInterestRate(new BigDecimal(0.15));
+                loan.setInterestRate(BigDecimal.valueOf(0.15));
             }
             return this.loanRepository.save(loan);
         } else {
@@ -210,17 +214,17 @@ public class LoanService {
     }
 
     private BigDecimal obtainInterest(BigDecimal interestRate, BigDecimal amount, String unit, Integer period){
-        BigDecimal year = new BigDecimal(360);
-        BigDecimal month = new BigDecimal(30);
-        BigDecimal dailyInterest = (interestRate.divide(year)).multiply(amount);
-        BigDecimal monthlyInterest = dailyInterest.multiply(month);
-        if (unit == "MON"){
-            monthlyInterest.multiply(new BigDecimal(period));
+
+        BigDecimal interest = null;
+
+        if (unit.equals("MON")){
+            BigDecimal monthlyInterest = interestRate.divide(BigDecimal.valueOf(12), 10, BigDecimal.ROUND_HALF_UP);
+            interest = amount.multiply(monthlyInterest).multiply(BigDecimal.valueOf(period));
         }
-        if (unit == "YEA"){
-            monthlyInterest.multiply(new BigDecimal(period*12));
+        if (unit.equals("YEA")){
+            interest = amount.multiply(interestRate).multiply(BigDecimal.valueOf(period));
         }
-        return monthlyInterest;
+        return interest;
     }
 
 }
