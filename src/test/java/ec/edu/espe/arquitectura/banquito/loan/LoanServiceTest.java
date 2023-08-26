@@ -1,7 +1,9 @@
 package ec.edu.espe.arquitectura.banquito.loan;
 
+import ec.edu.espe.arquitectura.banquito.loan.dto.GuarantyRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.LoanRS;
+import ec.edu.espe.arquitectura.banquito.loan.model.Guaranty;
 import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.repository.GuarantyRepository;
 import ec.edu.espe.arquitectura.banquito.loan.repository.LoanRepository;
@@ -15,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,6 +63,7 @@ public class LoanServiceTest {
                 .repaymentInstallments(12)
                 .interestRate(BigDecimal.valueOf(0.10))
                 .build();
+
     }
 
     @Test
@@ -257,5 +261,63 @@ public class LoanServiceTest {
         });
         assertEquals("El monto no puede exceder los $150.000 en este préstamo", exceptionMontoMayor.getMessage());
     }
+
+    @Test
+    public void testCreateGuarantyNewGuarrantor() {
+        GuarantyRQ guarantyRQ = new GuarantyRQ();
+        guarantyRQ.setCode("123");
+        guarantyRQ.setClientId("client1");
+
+        Guaranty guarantySaved = Guaranty.builder().id(1).clientId("client1")
+                .groupCompanyId(null).code("123").assetName(null).type("GUA")
+                        .state("ACT").build();
+
+        when(guarantyRepository.findByCode("123")).thenReturn(null);
+        when(guarantyRepository.save(any())).thenReturn(guarantySaved);
+
+        Guaranty result = loanService.createGuaranty(guarantyRQ);
+        assertEquals("ACT", result.getState());
+        assertEquals("GUA", result.getType());
+    }
+
+    @Test
+    public void testCreateGuarantyNewAsset() {
+        GuarantyRQ guarantyRQ = new GuarantyRQ();
+        guarantyRQ.setCode("123");
+        guarantyRQ.setClientId("client1");
+
+        Guaranty guarantySaved = Guaranty.builder().id(1).clientId(null)
+                .groupCompanyId(null).code("123").assetName("Casa").type("ASS")
+                .state("ACT").build();
+
+        when(guarantyRepository.findByCode("123")).thenReturn(null);
+        when(guarantyRepository.save(any())).thenReturn(guarantySaved);
+
+        Guaranty result = loanService.createGuaranty(guarantyRQ);
+        assertEquals("ACT", result.getState());
+        assertEquals("ASS", result.getType());
+        assertEquals("Casa", result.getAssetName());
+    }
+
+    @Test
+    void testAddGuarantyToLoan(){
+        LoanRQ loanRQ = new LoanRQ();
+        loanRQ.setGuarantyId(1);
+
+        Loan existingLoan = new Loan();
+        Guaranty guaranty = new Guaranty();
+        guaranty.setId(1);
+
+        when(loanRepository.findByUuid(any())).thenReturn(existingLoan);
+        when(guarantyRepository.findById(any())).thenReturn(Optional.of(guaranty));
+        when(loanRepository.save(any())).thenReturn(existingLoan);
+
+        Loan result = loanService.addGuarantyToLoan(loanRQ, "uuid");
+
+        assertNotNull(result);
+        assertEquals(1, result.getGuarantyId());
+    }
+
+
 
 }
