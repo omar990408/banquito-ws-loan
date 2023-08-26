@@ -213,7 +213,7 @@ public class LoanService {
         return guaranty;
     }
 
-    private BigDecimal obtainInterest(BigDecimal interestRate, BigDecimal amount, String unit, Integer period){
+    public BigDecimal obtainInterest(BigDecimal interestRate, BigDecimal amount, String unit, Integer period){
 
         BigDecimal interest = null;
 
