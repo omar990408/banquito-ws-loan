@@ -94,8 +94,6 @@ class AmortizationServiceTest {
                 .loanId(loan.getId())
                 .type("ITA")
                 .build();
-        Amortization amortization = getFirstQuota(loan);
-        Amortization amortization1 = getSecondQuota(loan);
         given(loanRepository.findById(loan.getId())).willReturn(Optional.of(loan));
         //when
         //then
@@ -124,7 +122,6 @@ class AmortizationServiceTest {
     void findByLoanUuidAmortizationTestTrowException() {
         //given
         String loanUUID = UUID.randomUUID().toString();
-        Loan loan = getLoan(loanUUID);
         List<Amortization> amortizationList = new ArrayList<>();
         given(amortizationRepository.findByLoan_Uuid(loanUUID)).willReturn(amortizationList);
         //when
