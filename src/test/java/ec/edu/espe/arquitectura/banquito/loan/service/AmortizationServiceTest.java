@@ -2,6 +2,7 @@ package ec.edu.espe.arquitectura.banquito.loan.service;
 
 import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationRS;
+import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationSimulationRQ;
 import ec.edu.espe.arquitectura.banquito.loan.model.Amortization;
 import ec.edu.espe.arquitectura.banquito.loan.model.Loan;
 import ec.edu.espe.arquitectura.banquito.loan.repository.AmortizationRepository;
@@ -29,6 +30,35 @@ class AmortizationServiceTest {
     private AmortizationRepository amortizationRepository;
     @Mock
     private LoanRepository loanRepository;
+
+    @Test
+    void simulateAmortizationFrenchTest() {
+        //given
+        AmortizationSimulationRQ amortizationRQ = AmortizationSimulationRQ.builder()
+                .type("FRA")
+                .amount(BigDecimal.valueOf(10000))
+                .repaymentInstallments(10)
+                .build();
+        //when
+        List<AmortizationRS> actual = underTest.simulateAmortization(amortizationRQ);
+        //then
+        assertEquals(amortizationRQ.getRepaymentInstallments(), actual.size());
+    }
+
+    @Test
+    void simulateAmortizationGermanTest() {
+        //given
+        AmortizationSimulationRQ amortizationRQ = AmortizationSimulationRQ.builder()
+                .type("ALE")
+                .amount(BigDecimal.valueOf(10000))
+                .repaymentInstallments(10)
+                .build();
+        //when
+        List<AmortizationRS> actual = underTest.simulateAmortization(amortizationRQ);
+        //then
+        assertEquals(amortizationRQ.getRepaymentInstallments(), actual.size());
+    }
+
     @Test
     void generateAmortizationThrowExceptionWhenLoanNotFound() {
         //given

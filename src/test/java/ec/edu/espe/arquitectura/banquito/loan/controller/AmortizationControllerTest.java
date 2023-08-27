@@ -1,9 +1,9 @@
 package ec.edu.espe.arquitectura.banquito.loan.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationRQ;
 import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationRS;
+import ec.edu.espe.arquitectura.banquito.loan.dto.AmortizationSimulationRQ;
 import ec.edu.espe.arquitectura.banquito.loan.model.Amortization;
 import ec.edu.espe.arquitectura.banquito.loan.service.AmortizationService;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -79,6 +79,38 @@ class AmortizationControllerTest {
     }
 
     @Test
+    void simulateAmortization() throws Exception {
+        //given
+        AmortizationSimulationRQ amortizationRQ = AmortizationSimulationRQ.builder()
+                .type("FRA")
+                .amount(BigDecimal.valueOf(10000))
+                .repaymentInstallments(10)
+                .build();
+        AmortizationRS amortizationRS = AmortizationRS.builder()
+                .id(1)
+                .loanUuid(UUID.randomUUID().toString())
+                .uuid(UUID.randomUUID().toString())
+                .type("FRA")
+                .quotaNum(1)
+                .dueDate(new Date())
+                .quotaCapital(BigDecimal.valueOf(10000))
+                .quotaInterest(BigDecimal.valueOf(100))
+                .quotaAmount(BigDecimal.valueOf(10100))
+                .remainingBalance(BigDecimal.valueOf(10000))
+                .quotaStatus("PEN")
+                .build();
+        List<AmortizationRS> amortizationRSList = List.of(amortizationRS);
+        given(amortizationService.simulateAmortization(amortizationRQ)).willReturn(amortizationRSList);
+        //when
+        ResultActions response = mockMvc.perform(get(URL + "/simulate")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(amortizationRQ)));
+        //then
+        response.andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void findByLoanTest() throws Exception {
         //given
         String uuid = UUID.randomUUID().toString();
@@ -108,7 +140,8 @@ class AmortizationControllerTest {
                 .remainingBalance(BigDecimal.valueOf(10000))
                 .quotaStatus("PEN")
                 .build();
-        given(amortizationService.findByLoanUuid(uuid)).willReturn(List.of(amortizationRS, amortizationRS1));
+        List<AmortizationRS> amortizationRSList = List.of(amortizationRS, amortizationRS1);
+        given(amortizationService.findByLoanUuid(uuid)).willReturn(amortizationRSList);
         //when
         ResultActions response = mockMvc.perform(get(URL + "/findByLoan/" + uuid)
                 .contentType("application/json"));
